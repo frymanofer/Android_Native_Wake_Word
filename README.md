@@ -17,7 +17,7 @@ Welcome to **Davoice Android Native Wake Word / hotword / Keywords Detection** �
 - **1.2% per hour** 
 - **83 hours constantly listening and analyzing multiple wake words** 
 
-This is a **"wake word"** package for React Native. A "wake word" is a keyword that activates your device, like "Hey Siri" or "OK Google". "Wake Word" is also known as "keyword detection", "Phrase Recognition", "Phrase Spotting", “Voice triggered”, “hot word”, “trigger word”
+This is an optimized **"wake word"** package for Android Native. A "wake word" is a keyword that activates your device, like "Hey Siri" or "OK Google". "Wake Word" is also known as "keyword detection", "Phrase Recognition", "Phrase Spotting", “Voice triggered”, “hot word”, “trigger word”
 
 It also provide **Speech to Intent**. **Speech to Intent** refers to the ability to recognize a spoken word or phrase
 and directly associate it with a specific action or operation within an application. Unlike a **"wake word"**, which typically serves to activate or wake up the application,
@@ -335,10 +335,10 @@ Third          0.626567
 "Wake word detection github"
 “Voice triggered”
 “hot word”
-“react-native trigger word”
-“react-native Voice triggered”
-“react-native hot word”
-"react-native wake word",
+“Android trigger word”
+“Android Voice triggered”
+“Android hot word”
+"Android wake word",
 "Wake word generator",
 "hot word generator",
 "trigger word generator",
@@ -356,11 +356,11 @@ Third          0.626567
 "voice commands",
 "voice to intent",
 "phrase spotting",
-"react native wake word",
+"Android wake word",
 "Davoice.io wake word",
 "Davoice wake word",
-"Davoice react native wake word",
-"Davoice react-native wake word",
+"Davoice Android wake word",
+"Davoice Android wake word",
 "wake",
 "word",
 "Voice Commands Recognition",
@@ -379,7 +379,7 @@ Third          0.626567
 "keyword detection"
 "Phrase Recognition"
 "Phrase Spotting"
-"react-native wake word",
+"Android wake word",
 "Custom wake word",
 "voice commands",
 "wake word",
@@ -390,12 +390,12 @@ Third          0.626567
 "speech to intent",
 "voice to intent",
 "phrase spotting",
-"react native wake word",
+"Android wake word",
 "Davoice.io wake word",
 "Davoice wake word",
 "Davoice wake word",
-"Davoice react native wake word",
-"Davoice.io react-native wake word",
+"Davoice Android wake word",
+"Davoice.io Android wake word",
 "wake",
 "word",
 "Voice Commands Recognition",
@@ -405,11 +405,11 @@ Third          0.626567
 "speech to intent",
 "voice to intent",
 "phrase spotting",
-"react native wake word",
+"Android wake word",
 "Davoice.io wake word",
 "Davoice wake word",
-"Davoice react native wake word",
-"Davoice react-native wake word",
+"Davoice Android wake word",
+"Davoice Android wake word",
 "wake",
 "word",
 "Voice Commands Recognition",
