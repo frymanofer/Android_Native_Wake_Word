@@ -10,7 +10,11 @@ Welcome to **Davoice Android Native Wake Word / hotword / Keywords Detection** �
 
 ## About this package:
 
-The first wake word with optimized cross compiled onnx libraries achieving 0.02% battary consumption per minute or 1.2% per hour --> 83 hours of battary while constantly listening to multiple wake words.
+**"The first Wake Word detection with optimized cross compiled onnx libraries. 
+Achieving battary consumption:
+0.02% per minute
+1.2% per hour
+83 hours of battary while constantly listening to multiple wake words."**
 
 This is a **"wake word"** package for React Native. A "wake word" is a keyword that activates your device, like "Hey Siri" or "OK Google". "Wake Word" is also known as "keyword detection", "Phrase Recognition", "Phrase Spotting", “Voice triggered”, “hot word”, “trigger word”
 
