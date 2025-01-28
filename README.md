@@ -1,6 +1,6 @@
 # Android Native "wake word" by Davoice
 
-## Android Native "wake word" also known as "Android Native hotword", "Android Native trigger word”, "Android Native phrase spotting” and more...
+## Android Native "wake word", "hotword", and "phrase spotting”
 
 By [DaVoice.io](https://davoice.io)
 
