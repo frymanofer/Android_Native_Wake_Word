@@ -292,9 +292,7 @@ boolean destroyed = api.destroyInstance("instance1");
 ## Githhub examples:
 
 ### Checkout examples on:
-https://github.com/frymanofer/ReactNative_WakeWordDetection
-
-https://github.com/frymanofer/ReactNative_WakeWordDetection/example_npm
+Coming soon...
 
 ## FAQ:
 
