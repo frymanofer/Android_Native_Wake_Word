@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import android.content.Context;
 
-public class KeyWordDetectionAPI {
+public class WakeWordDetectionAPI {
 
     private final String TAG = "KeyWordsDetection";
     private Context context;
@@ -16,7 +16,7 @@ public class KeyWordDetectionAPI {
     // Map to hold multiple instances
     private Map<String, KeyWordsDetection> instances = new HashMap<>();
 
-    public KeyWordDetectionAPI(Context context) {
+    public WakeWordDetectionAPI(Context context) {
         this.context = context;
     }
 
