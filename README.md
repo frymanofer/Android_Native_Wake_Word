@@ -73,45 +73,10 @@ In order to generate your custom wake word you will need to:
 
     android/app/src/main/assets/*.onnx
 
-- **Add Wake word to IOS**
-    Copy new models somewhere under ios/YourProjectName.
-
-    You can create a folder ios/YourProjectName/models/ and copy there there.
-
-    Now add each onnx file to xcode making sure you opt-in “copy if needed”.
-
-- **In React/JS code add the new onnx files to your configuration**
-  
-    Change:
+- **Call the WakeWordDetectionAPI with the new onnx file:**
 
 ```
-    // Create an array of instance configurations
-
-    const instanceConfigs:instanceConfig[] = [
-  
-      { id: 'need_help_now', modelName: 'need_help_now.onnx', threshold: 0.9999, bufferCnt: 3 , sticky: false },
-  
-    ];
-  
-    To:
-  
-    // Create an array of instance configurations
-  
-    const instanceConfigs:instanceConfig[] = [
-  
-      { id: 'my_wake_word', modelName: 'my_wake_word.onnx', threshold: 0.9999, bufferCnt: 3 , sticky: false },
-  
-    ];
-  
-    For example if your generated custom wake word" is "hey sky":
-  
-    // Create an array of instance configurations
-  
-    const instanceConfigs:instanceConfig[] = [
-  
-      { id: 'hey sky', modelName: 'hey_sky.onnx', threshold: 0.9999, bufferCnt: 3 , sticky: false },
-  
-    ];
+createInstance(instanceId, **"hey_sky.onnx"**,  threshold,  bufferCnt);
 ```
 
 - **Last step - Rebuild your project**
