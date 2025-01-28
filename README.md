@@ -45,9 +45,9 @@ Third          0.626567
 ```
 
 - **Achieving extraordinary battery life time:**
-- **0.02% per minute** 
-- **1.2% per hour** 
-- **83 hours constantly listening and analyzing multiple wake words** 
+    - **0.02% per minute** 
+    - **1.2% per hour** 
+    - **83 hours constantly listening and analyzing multiple wake words** 
 
 - **Low Latency:** Experience near-instantaneous keyword detection.
 
