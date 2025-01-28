@@ -44,8 +44,11 @@ Top Player     0.874812
 Third          0.626567
 ```
 
-- **Easy to deploy wake word with React Native:** Check out our example: "rn_example/DetectingKeyWords.js". With a few simple lines of code, you have your own keyword detecting enabled app.
-- **Cross-Platform Support:** Integrate Davoice KeywordsDetection into Android Native Framework. Both iOS and Android are supported.
+- **Achieving extraordinary battery life time:**
+- **0.02% per minute** 
+- **1.2% per hour** 
+- **83 hours constantly listening and analyzing multiple wake words** 
+
 - **Low Latency:** Experience near-instantaneous keyword detection.
 
 ## Platforms and Supported Languages
