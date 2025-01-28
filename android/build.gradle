@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 33
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = ['src/main/jniLibs'] // Add this line if needed
+        }
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url 'https://maven.pkg.github.com/microsoft/onnxruntime'
+    }
+    maven {
+        url './libs'
+    }
+    maven {
+        url "$projectDir/libs"
+    }
+    mavenLocal()
+}
+
+dependencies {
+    implementation "com.facebook.react:react-native:+"
+    implementation 'ai.picovoice:android-voice-processor:1.0.2'
+    implementation 'com.davoice:keyworddetection:1.0.0'
+}
+
+// Run this once to be able to run the application with BUCK
+// puts all compile dependencies into folder libs for BUCK to use
+task copyDownloadableDepsToLibs(type: Copy) { 
+    from configurations.implementation
+    into 'libs'
+}
