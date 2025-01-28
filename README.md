@@ -1,12 +1,12 @@
-# React-Native "wake word" by Davoice
+# Android Native "wake word" by Davoice
 
-## React-Native "wake word" also known as "react-native hotword", "react-native trigger word”, "react-native phrase spotting” and more...
+## Android Native "wake word" also known as "Android Native hotword", "Android Native trigger word”, "Android Native phrase spotting” and more...
 
 By [DaVoice.io](https://davoice.io)
 
 [![Twitter URL](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2FDaVoiceAI)](https://twitter.com/DaVoiceAI)
 
-Welcome to **Davoice React-Native Wake Word / hotword / Keywords Detection** – Wake words and keyword detection solution designed by **DaVoice.io**.
+Welcome to **Davoice Android Native Wake Word / hotword / Keywords Detection** – Wake words and keyword detection solution designed by **DaVoice.io**.
 
 ## About this package:
 
@@ -40,13 +40,12 @@ Third          0.626567
 ```
 
 - **Easy to deploy wake word with React Native:** Check out our example: "rn_example/DetectingKeyWords.js". With a few simple lines of code, you have your own keyword detecting enabled app.
-- **Cross-Platform Support:** Integrate Davoice KeywordsDetection into React-Native Framework. Both iOS and Android are supported.
+- **Cross-Platform Support:** Integrate Davoice KeywordsDetection into Android Native Framework. Both iOS and Android are supported.
 - **Low Latency:** Experience near-instantaneous keyword detection.
 
 ## Platforms and Supported Languages
 
-- **React-Native wake word Android:** React Native Wrapper for Android.
-- **React-Native wake word iOS:** React Native Wrapper for iOS.
+- **Android wake word:** API for Android Native.
 
 # Wake word generator
 
@@ -111,28 +110,29 @@ In order to generate your custom wake word you will need to:
 
 ## Contact
 
-For any questions, requirements, or more support for React-Native, please contact us at info@davoice.io.
+For any questions, requirements, or more support for Android Native, please contact us at info@davoice.io.
 
 ## Android:
 Add this to your android/build.gradle file:
 
-allprojects {
+```
+    maven {
+        url './libs'
+    }
+    maven {
+        url "$projectDir/libs"
+    }
+    mavenLocal()
+```
 
-    repositories {
+And this to either your android/build.gradle or android/app/build.gradle depending if you are building a library or an App:
 
-        // react-native-wakeword added
-
-	    maven { url "${project(":react-native-wakeword").projectDir}/libs" }
-        
-        maven { url("${project(':react-native-wakeword').projectDir}/libs") } 
-        
-        maven {
-            url("${project(':react-native-wakeword').projectDir}/libs")
-        }
-        
-        // End react-native-wakeword added
-        
-        ... your other lines...
+```
+   dependencies {
+      implementation 'ai.picovoice:android-voice-processor:1.0.2'
+      implementation 'com.davoice:keyworddetection:1.0.0'
+   }
+```
 
 # WakeWordDetectionAPI Documentation
 
