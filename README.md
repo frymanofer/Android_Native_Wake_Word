@@ -12,7 +12,7 @@ Welcome to **Davoice Android Native Wake Word / hotword / Keywords Detection** â
 
 **The first Wake Word detection with optimized cross compiled onnx libraries.**
 
-## **Achieving battery consumption:**
+### **Achieving battery consumption:**
 - **0.02% per minute** 
 - **1.2% per hour** 
 - **83 hours constantly listening and analyzing multiple wake words** 
