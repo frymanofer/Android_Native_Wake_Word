@@ -34,7 +34,7 @@ More questions? - Contact us at info@DaVoice.io
 
 ## Features
 
-- **High Accuracy:** We have succesfully reached over 99% accurary for all our models. **Here is on of our customer's benchmarks**:
+- **High Accuracy:** We have successfully reached over 99% accuracy for all our models. **Here is on of our customer's benchmarks**:
 
 ```
 MODEL         DETECTION RATE
@@ -318,7 +318,7 @@ seamless and intuitive voice-driven user experiences.
 
 ### How accurate is the platform?
 
-We have succesfully reached over 99% "wake word" accurary for all our models. **Here is on of our customer's benchmarks**:
+We have successfully reached over 99% "wake word" accuracy for all our models. **Here is on of our customer's benchmarks**:
 
 ```
 MODEL         DETECTION RATE
