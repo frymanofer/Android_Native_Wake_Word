@@ -35,7 +35,7 @@ repositories {
 dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation 'ai.picovoice:android-voice-processor:1.0.2'
-    implementation 'com.davoice:keyworddetection:1.0.0'
+    api 'com.davoice:keyworddetection:1.0.0'
 }
 
 // Run this once to be able to run the application with BUCK
