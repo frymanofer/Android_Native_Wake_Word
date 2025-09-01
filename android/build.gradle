@@ -21,9 +21,6 @@ repositories {
     google()
     mavenCentral()
     maven {
-        url 'https://maven.pkg.github.com/microsoft/onnxruntime'
-    }
-    maven {
         url './libs'
     }
     maven {
@@ -33,7 +30,6 @@ repositories {
 }
 
 dependencies {
-    implementation "com.facebook.react:react-native:+"
     implementation 'ai.picovoice:android-voice-processor:1.0.2'
     api 'com.davoice:keyworddetection:1.0.0'
 }
