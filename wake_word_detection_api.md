@@ -153,7 +153,7 @@ The `WakeWordDetectionAPI` logs important actions and errors using Android's `Lo
 WakeWordDetectionAPI api = new WakeWordDetectionAPI(context);
 
 // Create an instance
-boolean created = api.createInstance("instance1", "wakeword_model.onnx", 0.99f, 10);
+boolean created = api.createInstance("instance1", "wakeword_model.dm", 0.99f, 10);
 
 // Set a license key
 boolean licensed = api.setWakeWordDetectionLicense("instance1", "your-license-key");

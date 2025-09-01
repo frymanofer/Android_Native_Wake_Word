@@ -10,7 +10,7 @@ Welcome to **Davoice Android Native Wake Word / hotword / Keywords Detection** â
 
 ## About this package:
 
-**The first Wake Word detection with optimized cross compiled onnx libraries.**
+**The first Wake Word detection with optimized cross compiled dm libraries.**
 
 ### **Achieving battery consumption:**
 - **0.02% per minute** 
@@ -64,19 +64,19 @@ In order to generate your custom wake word you will need to:
 - **Create wake word mode:**
     Contact us at info@davoice.io with a list of your desired **"custom wake words"**.
 
-    We will send you corresponding models typically your **wake word phrase .onnx** for example:
+    We will send you corresponding models typically your **wake word phrase .dm** for example:
 
-    A wake word ***"hey sky"** will correspond to **hey_sky.onnx**.
+    A wake word ***"hey sky"** will correspond to **hey_sky.dm**.
 
 - **Add wake words to Android:**
-    Simply copy the new onnx files to:
+    Simply copy the new dm files to:
 
-    android/app/src/main/assets/*.onnx
+    android/app/src/main/assets/*.dm
 
-- **Call the WakeWordDetectionAPI with the new onnx file:**
+- **Call the WakeWordDetectionAPI with the new dm file:**
 
 ```
-createInstance(instanceId, **"hey_sky.onnx"**,  threshold,  bufferCnt);
+createInstance(instanceId, **"hey_sky.dm"**,  threshold,  bufferCnt);
 ```
 
 - **Last step - Rebuild your project**
@@ -262,7 +262,7 @@ The `WakeWordDetectionAPI` logs important actions and errors using Android's `Lo
 WakeWordDetectionAPI api = new WakeWordDetectionAPI(context);
 
 // Create an instance
-boolean created = api.createInstance("instance1", "wakeword_model.onnx", 0.99f, 10);
+boolean created = api.createInstance("instance1", "wakeword_model.dm", 0.99f, 10);
 
 // Set a license key
 boolean licensed = api.setWakeWordDetectionLicense("instance1", "your-license-key");
