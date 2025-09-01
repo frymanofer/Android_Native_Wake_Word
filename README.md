@@ -110,172 +110,109 @@ And this to either your android/build.gradle or android/app/build.gradle dependi
 # WakeWordDetectionAPI Documentation
 
 ## Overview
-The `WakeWordDetectionAPI` class provides functionality for managing instances of "wake word" detection, also known as "keyword detection", "Phrase Recognition", "Phrase Spotting", “Voice triggered”, “hot word” and “trigger word”, interacting with the `KeyWordsDetection` library. It allows you to create and manage multiple instances, start and stop wake word detection, and manage foreground services to use 'Wake word', "hotword" or "phrase detection" in the background.
+/*
+USAGE GUIDE (mirrors your JS flow, but for a native Android app)
 
----
+---------------------------------------
+1) Initialize the API (keep one per process)
+---------------------------------------
+final KeywordDetectionAPI api = new KeywordDetectionAPI(appContext);
 
-## Constructor
-### `WakeWordDetectionAPI(Context context)`
-Initializes a new instance of the API with the provided Android `Context`.
+// Optional: register one global listener for ALL instances
+api.setOnKeywordDetectionListener((instanceId, phrase) -> {
+    // NOTE: This may be invoked on a background thread.
+    // If you need to touch UI, post to the main thread.
+    Log.d("KWDemo", "Detected on " + instanceId + ": " + phrase);
+});
 
-#### Parameters:
-- `context` *(Context)*: The Android context, typically an `Application` or `Activity` context.
+---------------------------------------
+2) Build your instance configuration(s)
+---------------------------------------
+// Example: three models in ONE "multi_model_instance"
+List<KeywordDetectionAPI.InstanceConfig> configs = new ArrayList<>();
+configs.add(new KeywordDetectionAPI.InstanceConfig(
+        "hey_lookdeep.dm",
+        0.99f,
+        4,
+        false,     // sticky (kept for parity; the library constructor doesn't use it)
+        1000L      // msBetweenCallbacks (debounce between repeated detections)
+));
+configs.add(new KeywordDetectionAPI.InstanceConfig("need_help_now.dm", 0.99f, 4, false, 1000L));
+configs.add(new KeywordDetectionAPI.InstanceConfig("coca_cola_model_28_05052025.dm", 0.99f, 4, false, 1000L));
 
----
+---------------------------------------
+3) Create the instance (multi-model or single-model)
+---------------------------------------
+// MULTI-model:
+api.createInstanceMulti("multi_model_instance", configs);
 
-## Methods
+// Or SINGLE-model:
+api.createInstance("single_model_instance", "hey_lookdeep.dm", 0.99f, 4);
 
-### `boolean setWakeWordDetectionLicense(String instanceId, String licenseKey)`
-Sets the license key for a specific wake word detection instance.
+---------------------------------------
+4) (Optional) Start a foreground service for the instance
+---------------------------------------
+api.startForegroundService("multi_model_instance");
+// ... later you can stop it with:
+api.stopForegroundService("multi_model_instance");
 
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-- `licenseKey` *(String)*: The license key to be set.
+---------------------------------------
+5) Set license before starting detection
+---------------------------------------
+boolean licensed = api.setKeywordDetectionLicense("multi_model_instance",
+        "MTc1Nzg4MzYwMDAwMA==-lULiXsf2XwqYXN5iJ8XddZTWT/r0T14dWX6zhyWGGO4=");
+if (!licensed) {
+    // handle unlicensed state (disable start, show UI, etc.)
+}
 
-#### Returns:
-- `true` if the license was successfully set.
-- `false` if the instance was not found or the license could not be set.
+---------------------------------------
+6) Start detection
+---------------------------------------
+api.startKeywordDetection("multi_model_instance", 0.99f);
 
----
+---------------------------------------
+7) Receive detections
+---------------------------------------
+Your global OnKeywordDetectionListener above will be called with:
+    instanceId = "multi_model_instance"
+    phrase     = model name that fired (e.g., "hey_lookdeep.dm")
 
-### `boolean createInstance(String instanceId, String modelName, float threshold, int bufferCnt)`
-Creates a new wake word detection instance with the specified parameters.
+---------------------------------------
+8) (Optional) Access the recording WAV
+---------------------------------------
+String wavInfoOrPath = api.getRecordingWav("multi_model_instance");
+Log.d("KWDemo", "recordingWav=" + wavInfoOrPath);
 
-#### Parameters:
-- `instanceId` *(String)*: Unique identifier for the instance.
-- `modelName` *(String)*: The name of the wake word detection model to be used.
-- `threshold` *(float)*: The detection threshold.
-- `bufferCnt` *(int)*: This specifies the number of times the speech buffer is rechecked using slightly adjusted models. It significantly reduces false positives to near zero.
+---------------------------------------
+9) Stop detection
+---------------------------------------
+api.stopKeywordDetection("multi_model_instance");
 
-#### Returns:
-- `true` if the instance was successfully created.
-- `false` if an error occurred or the instance already exists.
+---------------------------------------
+10) Swap models at runtime (single-model semantics)
+---------------------------------------
+api.replaceKeywordDetectionModel("multi_model_instance",
+        "another_model.dm",
+        0.98f,
+        4);
 
----
+---------------------------------------
+11) Destroy when done (or app shutdown)
+---------------------------------------
+api.destroyInstance("multi_model_instance");
+// Or nuke everything:
+api.destroyAll();
 
-### `String getRecordingWav(String instanceId)`
-Retrieves the recording WAV file for a specific wake word detection instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-
-#### Returns:
-- The path to the recording WAV file, or `null` if the instance does not exist or an error occurred.
-
----
-
-### `boolean replaceWakeWordDetectionModel(String instanceId, String modelName, float threshold, int bufferCnt)`
-Replaces the wake word detection model for an existing instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-- `modelName` *(String)*: The name of the new wake word or hotword model.
-- `threshold` *(float)*: The new detection threshold.
-- `bufferCnt` *(int)*: The new buffer count.
-
-#### Returns:
-- `true` if the model was successfully replaced.
-- `false` if the instance was not found or an error occurred.
-
----
-
-### `boolean startWakeWordDetection(String instanceId, float threshold)`
-Starts wake word or hotword detection for a specific instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-- `threshold` *(float)*: The detection threshold.
-
-#### Returns:
-- `true` if detection was successfully started.
-- `false` if the instance was not found or an error occurred.
-
----
-
-### `boolean stopWakeWordDetection(String instanceId)`
-Stops wake word or phrase detection for a specific instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-
-#### Returns:
-- `true` if detection was successfully stopped.
-- `false` if the instance was not found or an error occurred.
-
----
-
-### `boolean startForegroundService(String instanceId)`
-Starts a foreground service for a specific wake word detection instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-
-#### Returns:
-- `true` if the service was successfully started.
-- `false` if the instance was not found or an error occurred.
-
----
-
-### `boolean stopForegroundService(String instanceId)`
-Stops a foreground service for a specific wake word detection instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-
-#### Returns:
-- `true` if the service was successfully stopped.
-- `false` if the instance was not found or an error occurred.
-
----
-
-### `boolean destroyInstance(String instanceId)`
-Destroys a wake word detection instance, stopping any ongoing detection and cleaning up resources.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-
-#### Returns:
-- `true` if the instance was successfully destroyed.
-- `false` if the instance was not found.
-
----
-
-## Private Methods
-
-### `void onWakeWordDetected(String instanceId, Boolean detected)`
-Handles the wake word detection event for a specific instance.
-
-#### Parameters:
-- `instanceId` *(String)*: The ID of the instance.
-- `detected` *(Boolean)*: Whether the wake word or phrase was detected.
-
----
-
-## Logging
-The `WakeWordDetectionAPI` logs important actions and errors using Android's `Log` class with the tag `KeyWordsDetection`.
-
----
-
-## Example Usage
-```java
-// Initialize the API
-WakeWordDetectionAPI api = new WakeWordDetectionAPI(context);
-
-// Create an instance
-boolean created = api.createInstance("instance1", "wakeword_model.dm", 0.99f, 10);
-
-// Set a license key
-boolean licensed = api.setWakeWordDetectionLicense("instance1", "your-license-key");
-
-// Start wake word detection
-boolean started = api.startWakeWordDetection("instance1", 0.99f);
-
-// Stop wake word detection
-boolean stopped = api.stopWakeWordDetection("instance1");
-
-// Destroy the instance
-boolean destroyed = api.destroyInstance("instance1");
-```
+NOTES:
+- The listener is GLOBAL for simplicity. You get the instanceId for routing.
+  If you need per-instance listeners, you can easily extend this class to store
+  a Map<instanceId, OnKeywordDetectionListener> in parallel.
+- Callbacks may arrive on a background thread. Post to main if touching UI.
+- The “sticky” flag in InstanceConfig is carried over from your TS interface for parity,
+  but your current library constructor doesn’t consume it. If you need it, wire it into
+  your library and add a corresponding parameter or setter.
+- Threshold in startKeywordDetection(...) lets you override at runtime.
+- Foreground service calls are pass-throughs to your library methods.
 
 ---
 
