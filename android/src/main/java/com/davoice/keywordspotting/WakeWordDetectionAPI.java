@@ -338,9 +338,9 @@ api.setOnKeywordDetectionListener((instanceId, phrase) -> {
 // Example: three models in ONE "multi_model_instance"
 List<KeywordDetectionAPI.InstanceConfig> configs = new ArrayList<>();
 configs.add(new KeywordDetectionAPI.InstanceConfig(
-        "hey_lookdeep.dm",
-        0.99f,
-        4,
+        "hey_lookdeep.dm", // change to the dm file you got from davoice
+        0.99f, // Threshold
+        4,     // Buffer_cnt
         false,     // sticky (kept for parity; the library constructor doesn't use it)
         1000L      // msBetweenCallbacks (debounce between repeated detections)
 ));
