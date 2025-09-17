@@ -103,7 +103,8 @@ public class KeywordDetectionAPI {
             throw new IllegalStateException("Instance already exists: " + instanceId);
         }
 
-        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelName, threshold, bufferCnt);
+        boolean fastSession = false; // change to true to minimize latency
+        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelName, threshold, bufferCnt, fastSession);
         // Bridge library callback -> API listener
         detector.initialize((detected, modelFromCallback) -> {
             if (detected) {
@@ -139,8 +140,8 @@ public class KeywordDetectionAPI {
             msBetweenCallback.length != size) {
             throw new IllegalArgumentException("All input arrays must have the same non-zero length.");
         }
-
-        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelPaths, thresholds, bufferCnts, msBetweenCallback);
+        boolean fastSession = false; // change to true to minimize latency
+        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelPaths, thresholds, bufferCnts, msBetweenCallback, fastSession);
         detector.initialize((detected, modelFromCallback) -> {
             if (detected) {
                 OnKeywordDetectionListener l = globalListener;
