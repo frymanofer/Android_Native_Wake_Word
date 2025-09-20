@@ -235,6 +235,32 @@ public class KeywordDetectionAPI {
     }
 
     /**
+     * Start keyword detection external with a threshold override.
+     *
+     * @throws IllegalStateException if instance does not exist
+     * @throws OrtException          if thrown by underlying ORT calls
+     */
+    public void startKeywordDetectionExternal(@NonNull String instanceId, float threshold) throws OrtException {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            detector.startListeningExternalAudio(threshold);
+            Log.d(TAG, "Started detection: " + instanceId + " (threshold=" + threshold + ")");
+        }
+    }
+
+
+    /**
+     * Pushes the external frame to detect.
+     */
+
+    public void pushNextFrame(@NonNull String instanceId, short[] pcm, int length) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            detector.pushNextFrame(pcm, length);
+        }
+    }
+
+    /**
      * Start keyword detection with a threshold override.
      *
      * @throws IllegalStateException if instance does not exist
