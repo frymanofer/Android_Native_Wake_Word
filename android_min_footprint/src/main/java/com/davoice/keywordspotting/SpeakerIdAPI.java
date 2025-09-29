@@ -21,9 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
     SpeakerIdNativeAPI sidMgr = new SpeakerIdNativeAPI(appContext);
  
-    // create regular or WWD instance
-    sidMgr.createInstance("sidA");      // or: sidMgr.createInstanceWWD("sidA");
- 
+    // create a WWD instance
+    sidMgr.createInstanceWWD("sidA");
+    // Or create a regular instance for none WWD use-case
+    // sidMgr.createInstance("sidA");
+    
     // external-audio cluster flow:
     int clusterId = sidMgr.initCluster("sidA", 3);
     sidMgr.createAndPushEmbeddingsToCluster("sidA", clusterId, pcmBlock, pcmBlock.length);
