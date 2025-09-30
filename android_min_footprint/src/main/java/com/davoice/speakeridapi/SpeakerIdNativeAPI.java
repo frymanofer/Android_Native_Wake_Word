@@ -1,4 +1,4 @@
-package com.davoice.speakerid;
+package com.davoice.speakeridapi;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.davoice.speakerid.*;
+
 
 /** 
  * Usage:
