@@ -2,11 +2,14 @@ package com.davoice.keywordspotting;
 
 import android.content.Context;
 import android.util.Log;
+import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import java.util.Iterator;
 
 import com.davoice.keywordsdetection.keywordslibrary.KeyWordsDetection;
+import com.davoice.keywordsdetection.keywordslibrary.LicenseInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +62,62 @@ public class KeywordDetectionAPI {
             this.bufferCnt = bufferCnt;
             this.sticky = sticky;
             this.msBetweenCallbacks = msBetweenCallbacks;
+        }
+    }
+    
+    public @NonNull String setKeywordDetectionLicensesJsonWithReport(@NonNull String instanceId,
+                                                                    @NonNull String licensesJson) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            JSONObject out = new JSONObject();
+            try {
+                JSONObject root = new JSONObject(licensesJson);
+                int v = root.optInt("v", 0);
+
+                out.put("v", v);
+                out.put("instanceId", instanceId);
+
+                if (v != 1) {
+                    out.put("okAll", false);
+                    out.put("error", "unsupported_version");
+                    return out.toString();
+                }
+
+                JSONObject licenses = root.getJSONObject("licenses");
+                JSONObject modelsOut = new JSONObject();
+
+                boolean okAll = true;
+                Iterator<String> it = licenses.keys();
+                while (it.hasNext()) {
+                    String modelName = it.next();
+                    String licenseKey = licenses.getString(modelName);
+
+                    // IMPORTANT: change low-level to return LicenseInfo
+                    LicenseInfo info = detector.setLicenseKeyPerModelInfo(modelName, licenseKey);
+
+                    JSONObject mi = new JSONObject();
+                    boolean valid = (info != null && info.valid);
+
+                    mi.put("valid", valid);
+                    mi.put("perpetual", info != null && info.perpetual);
+                    mi.put("expMillis", info != null ? info.expMillis : 0L);
+                    mi.put("fileBound", info != null && info.fileBound);
+                    mi.put("reason", (info != null && info.reason != null) ? info.reason : "error");
+
+                    okAll &= valid;
+                }
+
+                out.put("okAll", okAll);
+                out.put("models", modelsOut);
+                return out.toString();
+
+            } catch (Exception e) {
+                try {
+                    out.put("okAll", false);
+                    out.put("error", "parse_error");
+                } catch (Exception ignored) {}
+                return out.toString();
+            }
         }
     }
 
