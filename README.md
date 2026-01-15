@@ -75,6 +75,9 @@ In order to generate your custom wake word you will need to:
 
 - **Call the WakeWordDetectionAPI with the new dm file:**
 
+See
+./android/src/main/java/com/davoice/keywordspotting/WakeWordDetectionAPI.java
+For example: 
 ```
 createInstance(instanceId, **"hey_sky.dm"**,  threshold,  bufferCnt);
 ```
@@ -102,7 +105,6 @@ And this to either your android/build.gradle or android/app/build.gradle dependi
 
 ```
    dependencies {
-      implementation 'ai.picovoice:android-voice-processor:1.0.2'
       implementation 'com.davoice:keyworddetection:1.0.0'
    }
 ```

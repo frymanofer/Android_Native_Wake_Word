@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import ai.onnxruntime.OrtException;
 
 /**
- * KeywordDetectionAPI
+ * WakeWordDetectionAPI
  *
  * A lightweight, native (non-React) manager for multiple KeyWordsDetection instances,
  * addressed by string IDs. Each instance can be single-model or multi-model.
@@ -28,9 +28,9 @@ import ai.onnxruntime.OrtException;
  * Thread-safety: public mutating methods synchronize on the per-instance object
  * and the manager keeps instances in a ConcurrentHashMap.
  */
-public class KeywordDetectionAPI {
+public class WakeWordDetectionAPI {
 
-    private static final String TAG = "KeywordDetectionAPI";
+    private static final String TAG = "WakeWordDetectionAPI";
 
     /** Listener for keyword detections (fired when detected==true). */
     public interface OnKeywordDetectionListener {
@@ -128,7 +128,7 @@ public class KeywordDetectionAPI {
     /**
      * @param context Any context; the ApplicationContext is retained internally.
      */
-    public KeywordDetectionAPI(@NonNull Context context) {
+    public WakeWordDetectionAPI(@NonNull Context context) {
         this.appContext = context.getApplicationContext();
     }
 
@@ -162,8 +162,30 @@ public class KeywordDetectionAPI {
             throw new IllegalStateException("Instance already exists: " + instanceId);
         }
 
-        boolean fastSession = false; // change to true to minimize latency
-        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelName, threshold, bufferCnt, fastSession);
+        
+
+        /****
+         * This is the signature for the constructor.
+         * Single Model
+        public KeyWordsDetection(Context context, String modelPath, float threshold, int buffer_cnt)
+        throws OrtException, SecurityException {
+            this(
+                context,
+                new String[]{modelPath},
+                new float[]{threshold},
+                new int[]{buffer_cnt},
+                new long[]{2000L}
+            );
+        }
+    
+         * Multi Model
+        // Constructor with multiple model paths
+        public KeyWordsDetection(Context context, String[] modelPaths, float[] thresholds, int[] bufferCnts, long[] msBetweenCallback)
+            throws OrtException, SecurityException {
+
+        ****/
+
+        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelName, threshold, bufferCnt);
         // Bridge library callback -> API listener
         detector.initialize((detected, modelFromCallback) -> {
             if (detected) {
@@ -199,8 +221,7 @@ public class KeywordDetectionAPI {
             msBetweenCallback.length != size) {
             throw new IllegalArgumentException("All input arrays must have the same non-zero length.");
         }
-        boolean fastSession = false; // change to true to minimize latency
-        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelPaths, thresholds, bufferCnts, msBetweenCallback, fastSession);
+        KeyWordsDetection detector = new KeyWordsDetection(appContext, modelPaths, thresholds, bufferCnts, msBetweenCallback);
         detector.initialize((detected, modelFromCallback) -> {
             if (detected) {
                 OnKeywordDetectionListener l = globalListener;
@@ -383,7 +404,7 @@ USAGE GUIDE (mirrors your JS flow, but for a native Android app)
 ---------------------------------------
 1) Initialize the API (keep one per process)
 ---------------------------------------
-final KeywordDetectionAPI api = new KeywordDetectionAPI(appContext);
+final WakeWordDetectionAPI api = new WakeWordDetectionAPI(appContext);
 
 // Optional: register one global listener for ALL instances
 api.setOnKeywordDetectionListener((instanceId, phrase) -> {
@@ -396,16 +417,16 @@ api.setOnKeywordDetectionListener((instanceId, phrase) -> {
 2) Build your instance configuration(s)
 ---------------------------------------
 // Example: three models in ONE "multi_model_instance"
-List<KeywordDetectionAPI.InstanceConfig> configs = new ArrayList<>();
-configs.add(new KeywordDetectionAPI.InstanceConfig(
+List<WakeWordDetectionAPI.InstanceConfig> configs = new ArrayList<>();
+configs.add(new WakeWordDetectionAPI.InstanceConfig(
         "hey_lookdeep.dm", // change to the dm file you got from davoice
         0.99f, // Threshold
         4,     // Buffer_cnt
         false,     // sticky (kept for parity; the library constructor doesn't use it)
         1000L      // msBetweenCallbacks (debounce between repeated detections)
 ));
-configs.add(new KeywordDetectionAPI.InstanceConfig("need_help_now.dm", 0.99f, 4, false, 1000L));
-configs.add(new KeywordDetectionAPI.InstanceConfig("coca_cola_model_28_05052025.dm", 0.99f, 4, false, 1000L));
+configs.add(new WakeWordDetectionAPI.InstanceConfig("need_help_now.dm", 0.99f, 4, false, 1000L));
+configs.add(new WakeWordDetectionAPI.InstanceConfig("coca_cola_model_28_05052025.dm", 0.99f, 4, false, 1000L));
 
 ---------------------------------------
 3) Create the instance (multi-model or single-model)
