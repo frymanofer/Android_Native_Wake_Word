@@ -1,5 +1,7 @@
 # Android Native "wake word" by Davoice
 
+[License](LICENSE) · [Model and Voice Asset Notice](MODEL_NOTICES.md)
+
 ## Android Native "wake word", "hotword", and "phrase spotting”
 
 By [DaVoice.io](https://davoice.io)
