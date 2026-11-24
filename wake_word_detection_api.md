@@ -107,6 +107,57 @@ NOTES:
 
 ---
 
+## Your own audio (no microphone)
+
+If your app already captures the microphone, you can pass in the audio you already have. These calls never
+open the microphone.
+
+- **Audio format:** 16 kHz, mono, 16-bit PCM (`short[]`), in chunks of any size.
+- **Where:** `WakeWordDetectionAPI` in the `android` module. Needs `keyworddetection` 1.0.13 or newer, which is
+  already in `android/libs`.
+
+Create the instance and set the license as usual. Then you have two options.
+
+**One-shot: check one ~2 s clip** that may contain the wake word.
+
+```java
+api.warmUpExternalAudio("main");   // optional one-time warm-up (~0.3 s); otherwise the first call does it
+
+// off the UI thread:
+KeyWordsDetection.ExternalDetectionResult r = api.detectOnce("main", pcm, pcm.length);
+if (r.error == null && r.detected) {
+    // r.modelName, r.maxScore (0..1), r.detectedAtMs, r.processingMs
+}
+```
+
+- The listener is **not** called; read the result instead.
+- Every call is independent.
+- About 110–180 ms per 2 s clip on a Galaxy S20 FE.
+
+**Streaming:** continuous detection on your audio.
+
+```java
+api.startKeywordDetectionExternal("main", /* useVadGate = */ true);
+
+// in your audio loop, on a worker thread:
+api.pushAudio("main", buffer, samplesRead);   // detections -> the listener, on this thread
+
+api.stopKeywordDetectionExternal("main");
+```
+
+- **VAD gate on:** the wake word models run only while someone is speaking, which saves a lot of CPU in
+  silence. When speech starts, the second of audio before it is processed first, so the start of the wake
+  word is not lost.
+- **Gate settings:** `setExternalVadGate(id, speechThreshold, hangoverMs, preRollMs)`. Defaults are 0.4 /
+  2500 / 1000. Lower the threshold if your input is quiet.
+
+Rules:
+- The own-audio calls and `startKeywordDetection` (microphone) can't run at the same time on one instance.
+- Don't call `detectOnce` or `startKeywordDetectionExternal` from inside the listener.
+- Don't call `pushAudio` / `detectOnce` on the UI thread: they run the models on the calling thread.
+
+---
+
 ## Dependencies
 - `com.davoice.keywordsdetection.keywordslibrary.KeyWordsDetection`
 

@@ -341,6 +341,95 @@ public class WakeWordDetectionAPI {
         }
     }
 
+    // ===================== Your own audio (your app owns the microphone) =====================
+    // Audio: 16 kHz, mono, 16-bit PCM (short[]), any chunk size. These calls never open the
+    // microphone and cannot run while startKeywordDetection() is running on the same instance.
+    // See wake_word_detection_api.md, "Your own audio (no microphone)".
+
+    /**
+     * Optional one-time warm-up of the own-audio calls (loads and warms up the models, ~0.3 s).
+     * Without it, the first own-audio call does it.
+     */
+    public boolean warmUpExternalAudio(@NonNull String instanceId) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            return detector.warmUpExternalAudio();
+        }
+    }
+
+    /**
+     * Checks one clip, typically ~2 s that may contain the wake word. Synchronous (call it off the
+     * UI thread); the detection listener is NOT called -- read the result. Calls are independent.
+     *
+     * @throws IllegalStateException if instance does not exist
+     */
+    @NonNull
+    public KeyWordsDetection.ExternalDetectionResult detectOnce(@NonNull String instanceId,
+                                                                @NonNull short[] pcm, int length) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            return detector.detectOnce(pcm, length);
+        }
+    }
+
+    /**
+     * Starts detection on audio you push with {@link #pushAudio}. Detections arrive on the
+     * listener, on the thread that called pushAudio(). With useVadGate the wake word models run
+     * only while voice activity is detected (much less CPU in silence).
+     *
+     * @return false if it could not start (not licensed, microphone detection running, ...)
+     * @throws IllegalStateException if instance does not exist
+     */
+    public boolean startKeywordDetectionExternal(@NonNull String instanceId, boolean useVadGate) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            boolean ok = detector.startExternalStreaming(useVadGate);
+            Log.d(TAG, "Started own-audio detection: " + instanceId + " (VAD gate " + useVadGate
+                    + (useVadGate ? ", active " + detector.isExternalVadGateActive() : "") + ", ok " + ok + ")");
+            return ok;
+        }
+    }
+
+    /**
+     * Pushes 16 kHz mono PCM16 audio (any length; partial 80 ms frames are kept for the next call).
+     * Runs the models on the calling thread: use a worker thread.
+     *
+     * @throws IllegalStateException if instance does not exist
+     */
+    public void pushAudio(@NonNull String instanceId, @NonNull short[] pcm, int length) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            detector.pushAudio(pcm, length);
+        }
+    }
+
+    /**
+     * Stops own-audio detection (later pushAudio() calls are ignored).
+     *
+     * @throws IllegalStateException if instance does not exist
+     */
+    public void stopKeywordDetectionExternal(@NonNull String instanceId) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            detector.stopExternalStreaming();
+            Log.d(TAG, "Stopped own-audio detection: " + instanceId);
+        }
+    }
+
+    /**
+     * VAD gate of own-audio detection (defaults 0.4 / 2500 ms / 1000 ms, as the microphone mode).
+     *
+     * @param speechThreshold voice probability that counts as speech (lower it for quiet input)
+     * @param hangoverMs      how long the wake word models keep running after the last speech
+     * @param preRollMs       audio from before the speech onset processed when the gate opens
+     */
+    public void setExternalVadGate(@NonNull String instanceId, float speechThreshold, int hangoverMs, int preRollMs) {
+        KeyWordsDetection detector = requireInstance(instanceId);
+        synchronized (detector) {
+            detector.setExternalVadGate(speechThreshold, hangoverMs, preRollMs);
+        }
+    }
+
     /**
      * Fetch the internal recording WAV path/string for an instance.
      *

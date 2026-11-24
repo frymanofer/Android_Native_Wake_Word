@@ -111,6 +111,17 @@ And this to either your android/build.gradle or android/app/build.gradle dependi
    }
 ```
 
+## Your app already owns the microphone?
+
+The wake word can also run on audio your app already captures (16 kHz, mono, 16-bit PCM), without opening
+the microphone. There are two modes:
+- **One-shot** `detectOnce(...)`: checks a ~2 s clip.
+- **Streaming** `pushAudio(...)`: continuous detection, with an optional voice-activity gate that saves CPU
+  in silence.
+
+See ["Your own audio (no microphone)"](wake_word_detection_api.md#your-own-audio-no-microphone) in
+wake_word_detection_api.md.
+
 # WakeWordDetectionAPI Documentation
 
 ## Overview
