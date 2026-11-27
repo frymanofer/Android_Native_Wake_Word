@@ -505,7 +505,7 @@ api.setOnKeywordDetectionListener((instanceId, phrase) -> {
 ---------------------------------------
 2) Build your instance configuration(s)
 ---------------------------------------
-// Example: three models in ONE "multi_model_instance"
+// Example: two models in ONE "multi_model_instance"
 List<WakeWordDetectionAPI.InstanceConfig> configs = new ArrayList<>();
 configs.add(new WakeWordDetectionAPI.InstanceConfig(
         "hey_lookdeep.dm", // change to the dm file you got from davoice
@@ -515,7 +515,6 @@ configs.add(new WakeWordDetectionAPI.InstanceConfig(
         1000L      // msBetweenCallbacks (debounce between repeated detections)
 ));
 configs.add(new WakeWordDetectionAPI.InstanceConfig("need_help_now.dm", 0.99f, 4, false, 1000L));
-configs.add(new WakeWordDetectionAPI.InstanceConfig("coca_cola_model_28_05052025.dm", 0.99f, 4, false, 1000L));
 
 ---------------------------------------
 3) Create the instance (multi-model or single-model)
