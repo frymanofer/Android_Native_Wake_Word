@@ -244,7 +244,19 @@ NOTES:
 ## Githhub examples:
 
 ### Checkout examples on:
-Coming soon...
+[Android_Native_Davoice](https://github.com/frymanofer/Android_Native_Davoice): a native Kotlin app with wake word, speaker verification, speech to text, text to speech and a local LLM.
+
+## Learn more on davoice.io
+
+- [What is a wake word? DaVoice on-device wake word detection](https://davoice.io/wake-word)
+- [Android wake word detection in Kotlin](https://davoice.io/integration-guides-wake-word/android)
+- [Wake word benchmark](https://davoice.io/wake-word-benchmark): two independent customer studies, DaVoice vs. commercial engines and openWakeWord
+- [Complete guide to on-device wake word detection](https://davoice.io/wake-word-guide)
+- [Custom wake words without collecting training data](https://davoice.io/wake-word-training-data)
+- [Automotive wake word in production](https://davoice.io/use-case/automotive)
+- [On-device voice-to-voice AI agent SDK](https://davoice.io/voice-agent-sdk): wake word, speech to text, a local LLM with tool calling and text to speech, with no per-token API fees
+- [Free online text to speech](https://davoice.io/free-text-to-speech): free and unlimited, with no sign-up, no login and no subscription. Natural AI voices in 11 languages, voice cloning, MP3 and WAV download, generated in your browser
+- [Pricing](https://davoice.io/pricing): free license for proof-of-concept, academic and non-commercial projects
 
 ## FAQ:
 
